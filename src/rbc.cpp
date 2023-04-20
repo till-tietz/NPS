@@ -9,8 +9,8 @@
 using namespace Rcpp;
 
 // sorting helper 
-std::vector<size_t> rankSort(const std::vector<float>& v_temp) {
-  std::vector<std::pair<float, size_t> > v_sort(v_temp.size());
+std::vector<size_t> rankSort(const std::vector<double>& v_temp) {
+  std::vector<std::pair<double, size_t> > v_sort(v_temp.size());
   
   for (size_t i = 0U; i < v_sort.size(); ++i) {
     v_sort[i] = std::make_pair(v_temp[i], i);
@@ -80,7 +80,7 @@ std::vector<int> sample_replace(int max, int num_samples) {
 }
 
 // rbc helper 
-double get_rbc(const std::vector<float>& cont, const std::vector<int>& bin, int n) {
+double get_rbc(const std::vector<double>& cont, const std::vector<int>& bin, int n) {
   std::vector<size_t> ranks = rankSort(cont);
   std::vector<int> id_0 = findItems(bin, 0);
   std::vector<int> id_1 = findItems(bin, 1);
@@ -108,7 +108,7 @@ void update_progress_bar(int progress, int total) {
 }
 
 // [[Rcpp::export]]
-std::vector<double> rbcorr(const std::vector<float>& cont, 
+std::vector<double> rbcorr(const std::vector<double>& cont, 
                            const std::vector<int>& bin,
                            bool boot_ci = false, 
                            int boot_n = 500,
@@ -126,7 +126,7 @@ std::vector<double> rbcorr(const std::vector<float>& cont,
     for(int i = 0; i < boot_n; ++i) {
       std::vector<int> id = sample_replace(n,n);
       std::vector<int> bin_i;
-      std::vector<float> cont_i;
+      std::vector<double> cont_i;
       bin_i.reserve(n);
       cont_i.reserve(n);
         
